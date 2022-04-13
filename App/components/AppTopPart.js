@@ -2,13 +2,13 @@ import React from "react";
 import { Image, View, StyleSheet } from "react-native";
 import AppTextTitle from "./AppTextTitle";
 
-function AppTopPart(props) {
+function AppTopPart({ title = "Adventure Works", height = "50%" }) {
   return (
-    <View style={styles.topPart}>
+    <View style={[styles.topPart, (height = { height })]}>
       <Image style={styles.image} source={require("../assets/bg-login.jpg")} />
       <View style={styles.layer}>
         <View style={styles.overlay} />
-        <AppTextTitle>Adventure Works</AppTextTitle>
+        <AppTextTitle>{title}</AppTextTitle>
       </View>
     </View>
   );

@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  ImageBackground,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import AppButton from "../components/AppButton";
 import AppLoginBottom from "../components/AppLoginBottom";
@@ -14,24 +7,22 @@ import AppTextInput from "../components/AppTextInput";
 import AppTextTitle from "../components/AppTextTitle";
 import AppTopPart from "../components/AppTopPart";
 
-function Login(props) {
+function Register(props) {
   return (
     <View style={styles.container}>
       <AppTopPart />
       <AppLoginBottom />
       <AppTextTitle style={styles.welcome}>Welcome</AppTextTitle>
       <Text style={styles.textDescription}>
-        Login for bush adventure therapy
+        Sign up for bush adventure therapy
       </Text>
       <AppTextInput name="Email" />
       <AppTextInput name="Password" />
-      <AppButton title="Login" />
+      <AppTextInput name="Confirm Password" />
+      <AppButton title="Create Account" />
       <View style={styles.links}>
         <TouchableOpacity>
-          <Text style={{ color: "#13497B" }}>Forgot Password?</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={{ color: "#13497B" }}>Create New Account</Text>
+          <Text style={{ color: "#13497B" }}>Sign In Instead?</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -63,4 +54,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Register;

@@ -1,14 +1,50 @@
-import React from "react";
+import { React, useState, useEffect } from "react";
 import AppTopPart from "../components/AppTopPart";
 import { StyleSheet, Text, View } from "react-native";
 import AppSectionTitle from "../components/AppSectionTitle";
 import AppSection from "../components/AppSection";
+import AppButton from "../components/AppButton";
 
-function Home(props) {
+import { signOut, auth, db } from "../../firebase";
+import { getDocs, collection } from "@firebase/firestore";
+import { useNavigation } from "@react-navigation/core";
+
+function Home() {
+  const [cardDetails, setCardDetails] = useState([]);
+  let details = [];
+
+  useEffect(() => {
+    const unsubscribe = getDocs(collection(db, "events")).then((snapshot) => {
+      snapshot.forEach((doc) => {
+        // setCardDetails(...cardDetails, doc.data());
+        // console.log(cardDetails);
+        details.push(doc.data());
+      });
+      setCardDetails(details);
+      console.log(cardDetails, "From useeffect");
+    });
+    return unsubscribe;
+  }, []);
+
+  const navigation = useNavigation();
+
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        navigation.replace("Login");
+      })
+      .catch((error) => alert(error.message));
+  };
+
   return (
     <View style={styles.container}>
       <AppTopPart title="Home" height="40%" />
       <View style={styles.bottomContainer}>
+        <AppButton
+          onPress={handleSignOut}
+          style={styles.btn}
+          title="Sign Out"
+        />
         <Text style={styles.textTitle}>
           Welcome to Adventure Works Australia
         </Text>
@@ -18,21 +54,6 @@ function Home(props) {
     </View>
   );
 }
-
-const cardDetails = [
-  {
-    index: 0,
-    image: require("../assets/bg-login.jpg"),
-    title: "Adventure For All",
-    date: "1st Jan, 2022",
-  },
-  {
-    index: 1,
-    image: require("../assets/bg-login.jpg"),
-    title: "Adventure For All",
-    date: "1st Jan, 2022",
-  },
-];
 
 const styles = StyleSheet.create({
   container: {
@@ -51,6 +72,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
     margin: 40,
+    fontSize: 24,
+    width: "60%",
+  },
+  btn: {
+    alignSelf: "center",
+    textAlign: "center",
+    marginBottom: 40,
     fontSize: 24,
     width: "60%",
   },

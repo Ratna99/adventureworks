@@ -1,16 +1,38 @@
 import React from "react";
-import { ImageBackground, StyleSheet, View, Text } from "react-native";
+import {
+  ImageBackground,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+} from "react-native";
+import { useNavigation } from "@react-navigation/core";
 
-function Card({ title, date, image }) {
+function Card({ title, date, image, desc, location }) {
+  const navigation = useNavigation();
+
+  const navigateToDetails = () => {
+    navigation.navigate("EventDetails", { title, date, image, desc, location });
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.topPart}>
-        <ImageBackground source={image} style={styles.bg} />
-      </View>
-      <View style={styles.bottomPart}>
-        <Text>{title}</Text>
-        <Text>{date}</Text>
-      </View>
+      <TouchableOpacity onPress={navigateToDetails}>
+        <View style={styles.topPart}>
+          <ImageBackground
+            source={
+              image
+                ? { uri: image.toString() }
+                : require("../assets/bg-login.jpg")
+            }
+            style={styles.bg}
+          />
+        </View>
+        <View style={styles.bottomPart}>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.date}>{date}</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -18,10 +40,11 @@ function Card({ title, date, image }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
-    height: "30%",
+    height: 250,
     width: "90%",
     marginHorizontal: "5%",
     borderRadius: 40,
+    marginTop: 30,
   },
   topPart: {
     borderRadius: 10,
@@ -38,7 +61,16 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     height: "30%",
-    marginTop: "-20%",
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "500",
+  },
+  date: {
+    fontStyle: "italic",
   },
 });
 

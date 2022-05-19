@@ -1,21 +1,16 @@
 import React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { View, StyleSheet, TextInput, Text } from "react-native";
 
-function AppTextInput({ name, value, setValue }) {
+function AppTextAreaInput({ name, value, setValue }) {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{name}</Text>
       <TextInput
-        autoCapitalize={false}
-        autoCorrect={false}
+        multiline={true}
         value={value}
         onChangeText={(text) => {
           setValue(text);
         }}
-        textContentType={
-          name == "Password" || name == "Confirm Password" ? "password" : "none"
-        }
-        secureTextEntry={name == "Password" || name == "Confirm Password"}
         placeholder={name}
         style={styles.field}
       />
@@ -37,9 +32,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     backgroundColor: "white",
     borderRadius: 11,
-    height: 40,
+    height: 200,
     paddingLeft: 50,
   },
 });
 
-export default AppTextInput;
+export default AppTextAreaInput;

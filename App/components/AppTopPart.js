@@ -17,7 +17,7 @@ function AppTopPart({ title = "Adventure Works", height = "50%" }) {
 const styles = StyleSheet.create({
   topPart: {
     position: "relative",
-    height: "50%",
+    height: "10%",
     width: "100%",
   },
   image: {

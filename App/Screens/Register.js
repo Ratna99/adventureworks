@@ -1,13 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { auth, createUserWithEmailAndPassword, db } from "../../firebase";
+import { doc, setDoc } from "@firebase/firestore";
 
 import AppButton from "../components/AppButton";
 import AppLoginBottom from "../components/AppLoginBottom";
 import AppTextInput from "../components/AppTextInput";
 import AppTextTitle from "../components/AppTextTitle";
 import AppTopPart from "../components/AppTopPart";
+import { useNavigation } from "@react-navigation/core";
 
-function Register(props) {
+function Register() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+
+  const handleSignUp = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        setDoc(doc(db, "users", user.email), {
+          uid: user.uid,
+          email: user.email,
+          role: "user",
+        });
+      })
+      .catch((err) => alert(err.message));
+  };
+
+  const navigation = useNavigation();
+
+  const navigateToLogin = () => {
+    navigation.navigate("Login");
+  };
+
   return (
     <View style={styles.container}>
       <AppTopPart />
@@ -16,12 +42,16 @@ function Register(props) {
       <Text style={styles.textDescription}>
         Sign up for bush adventure therapy
       </Text>
-      <AppTextInput name="Email" />
-      <AppTextInput name="Password" />
-      <AppTextInput name="Confirm Password" />
-      <AppButton title="Create Account" />
+      <AppTextInput value={email} setValue={setEmail} name="Email" />
+      <AppTextInput value={password} setValue={setPassword} name="Password" />
+      <AppTextInput
+        value={confirm}
+        setValue={setConfirm}
+        name="Confirm Password"
+      />
+      <AppButton onPress={handleSignUp} title="Create Account" />
       <View style={styles.links}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={navigateToLogin}>
           <Text style={{ color: "#13497B" }}>Sign In Instead?</Text>
         </TouchableOpacity>
       </View>
